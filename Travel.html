@@ -412,10 +412,20 @@ let editMode = false;
 const STORE_KEY = "trip-data-v1";
 
 /* ============ 存取 ============ */
+// 這個網頁可能跑在兩種環境：
+// 1) Claude 的 artifact 預覽視窗 → 有 window.storage，可雲端同步
+// 2) 匯出後自架網站 / GitHub Pages → 沒有 window.storage，改用瀏覽器 localStorage（僅存在你自己的裝置上，不會同步給別人）
+const HAS_CLOUD_STORAGE = (typeof window.storage !== "undefined" && window.storage && typeof window.storage.get === "function");
+
 async function load(){
   try{
-    const r = await window.storage.get(STORE_KEY, true);
-    state = r ? JSON.parse(r.value) : defaultState();
+    if(HAS_CLOUD_STORAGE){
+      const r = await window.storage.get(STORE_KEY, true);
+      state = r ? JSON.parse(r.value) : defaultState();
+    }else{
+      const raw = localStorage.getItem(STORE_KEY);
+      state = raw ? JSON.parse(raw) : defaultState();
+    }
   }catch(e){
     state = defaultState();
   }
@@ -426,10 +436,14 @@ function save(msg){
   clearTimeout(saveTimer);
   saveTimer = setTimeout(async ()=>{
     try{
-      await window.storage.set(STORE_KEY, JSON.stringify(state), true);
+      if(HAS_CLOUD_STORAGE){
+        await window.storage.set(STORE_KEY, JSON.stringify(state), true);
+      }else{
+        localStorage.setItem(STORE_KEY, JSON.stringify(state));
+      }
       if(msg) showToast(msg);
     }catch(e){
-      showToast("儲存失敗，請檢查網路");
+      showToast("儲存失敗，請檢查瀏覽器儲存空間");
     }
   }, 250);
 }
