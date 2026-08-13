@@ -5,23 +5,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>旅行手帳</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@500;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#F4EEE0;
-    --bg-alt:#EAE1C9;
-    --ink:#2A2016;
-    --ink-soft:#6E5F4D;
-    --line:#2A2016;
-    --vermillion:#B23A2A;
-    --vermillion-soft:#E9CFC6;
-    --jade:#2E6B58;
-    --jade-soft:#D9E6DC;
-    --brass:#B8862E;
-    --brass-soft:#F1E1B8;
-    --card:#FFFCF4;
-    --shadow:0 3px 0 rgba(42,32,22,0.9);
+    --bg:#0A0E14;
+    --bg-alt:#0F1620;
+    --card:#121A24;
+    --card2:#0D141C;
+    --ink:#E7F2F6;
+    --ink-soft:#7C8B9A;
+    --line: rgba(120,200,255,0.28);
+    --line-strong: rgba(120,200,255,0.6);
+    --accent:#35E7C7;
+    --accent-soft: rgba(53,231,199,0.14);
+    --accent2:#FF4D7A;
+    --accent2-soft: rgba(255,77,122,0.14);
+    --accent3:#8C7CFF;
+    --accent3-soft: rgba(140,124,255,0.16);
+    --vermillion:var(--accent2);
+    --vermillion-soft:var(--accent2-soft);
+    --jade:var(--accent);
+    --jade-soft:var(--accent-soft);
+    --brass:var(--accent3);
+    --brass-soft:var(--accent3-soft);
+    --shadow: 0 0 0 1px var(--line), 0 8px 20px rgba(0,0,0,0.35);
     --radius:16px;
+    --mono:"JetBrains Mono","Space Grotesk",monospace;
+    --disp:"Space Grotesk","Noto Sans TC","PingFang TC",sans-serif;
   }
   *{box-sizing:border-box;}
   body{margin:0;}
@@ -30,311 +40,387 @@
     color:var(--ink);
     font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
     -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    width:100%;
   }
-  #app{max-width:520px;margin:0 auto;min-height:100vh;padding-bottom:100px;background:
-    linear-gradient(180deg, var(--bg) 0%, var(--bg) 100%);
-    position:relative;
+  #app{
+    max-width:520px;margin:0 auto;min-height:100vh;padding-bottom:110px;
+    position:relative;width:100%;overflow-x:hidden;
+    background:
+      repeating-linear-gradient(0deg, rgba(120,200,255,0.035) 0px, rgba(120,200,255,0.035) 1px, transparent 1px, transparent 40px),
+      repeating-linear-gradient(90deg, rgba(120,200,255,0.035) 0px, rgba(120,200,255,0.035) 1px, transparent 1px, transparent 40px),
+      var(--bg);
   }
   /* ===== header ===== */
   .hero{
-    padding:28px 20px 18px;
-    border-bottom:2px solid var(--line);
-    background:var(--bg);
+    padding:26px 20px 18px;
+    border-bottom:1px solid var(--line);
     position:relative;
   }
+  .hero::before,.hero::after{
+    content:"";position:absolute;width:14px;height:14px;
+    border-color:var(--accent);border-style:solid;opacity:.8;
+  }
+  .hero::before{top:10px;left:10px;border-width:2px 0 0 2px;}
+  .hero::after{top:10px;right:10px;border-width:2px 2px 0 0;}
+  .hero-row{display:flex;align-items:center;justify-content:space-between;gap:10px;}
   .hero-eyebrow{
     display:inline-flex;align-items:center;gap:6px;
-    font-family:"Noto Serif TC",serif;font-weight:900;font-size:12px;
-    background:var(--vermillion);color:#fff;padding:4px 10px 5px;
+    font-family:var(--mono);font-weight:700;font-size:11px;
+    background:linear-gradient(90deg,var(--accent),var(--accent3));color:#08110F;padding:5px 12px;
     border-radius:999px;letter-spacing:2px;
   }
-  .hero h1{
-    font-family:"Noto Serif TC",serif;font-weight:900;
-    font-size:32px;line-height:1.25;margin:10px 0 6px;
-    border:none;background:transparent;color:var(--ink);width:100%;padding:0;
-    outline:none;
+  .icon-btn{
+    font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:1px;
+    background:var(--card);color:var(--accent);border:1px solid var(--line-strong);
+    border-radius:999px;padding:7px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;
   }
-  .hero h1 span.accent{color:var(--vermillion);}
+  .icon-btn:active{background:var(--accent-soft);}
+  .hero h1{
+    font-family:"Noto Sans TC",var(--disp),sans-serif;font-weight:900;
+    font-size:30px;line-height:1.3;margin:14px 0 6px;
+    border:none;background:transparent;width:100%;padding:0;outline:none;
+    background:linear-gradient(90deg,#EAFBF7 10%,var(--accent) 60%,var(--accent3) 100%);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  }
   .hero-sub{
-    font-size:13px;color:var(--ink-soft);line-height:1.7;
+    font-size:12.5px;color:var(--ink-soft);line-height:1.8;
     border:none;background:transparent;width:100%;resize:none;padding:0;
     outline:none;font-family:inherit;
   }
   .base-note{
-    margin-top:14px;background:var(--ink);color:#F4EEE0;border-radius:14px;
-    padding:14px 16px;font-size:13px;line-height:1.7;display:flex;gap:10px;
+    margin-top:14px;background:var(--card2);color:var(--ink);border-radius:12px;
+    border:1px solid var(--line);border-left:3px solid var(--accent);
+    padding:14px 16px;font-size:13px;line-height:1.8;display:flex;gap:10px;
   }
   .base-note .icon{font-size:16px;flex:none;}
   .base-note textarea{
     background:transparent;border:none;color:inherit;width:100%;resize:none;
     font-family:inherit;font-size:inherit;line-height:inherit;outline:none;
   }
-  .base-note b{color:var(--brass-soft);}
+  .base-note b{color:var(--accent);font-family:var(--mono);font-weight:700;letter-spacing:.5px;}
+
+  /* ===== readonly banner ===== */
+  .ro-banner{
+    display:none;align-items:center;justify-content:space-between;gap:10px;
+    background:var(--accent3-soft);border-bottom:1px solid var(--accent3);
+    color:#D8D2FF;padding:10px 20px;font-size:12.5px;
+  }
+  .ro-banner b{color:var(--accent3);}
+  .ro-banner button{
+    font-family:var(--mono);font-size:11px;font-weight:700;background:var(--accent3);color:#0A0E14;
+    border:none;border-radius:999px;padding:6px 12px;cursor:pointer;flex:none;
+  }
 
   /* ===== tabs ===== */
   .tabbar{
     display:flex;gap:10px;overflow-x:auto;padding:16px 20px 12px;
-    border-bottom:2px solid var(--line);
+    border-bottom:1px solid var(--line);
     scrollbar-width:none;
   }
   .tabbar::-webkit-scrollbar{display:none;}
   .tab{
-    flex:none;width:74px;height:74px;border:2px solid var(--line);border-radius:16px;
+    flex:none;width:72px;height:72px;border:1px solid var(--line);border-radius:14px;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
     background:var(--card);cursor:pointer;box-shadow:var(--shadow);
-    transition:transform .12s ease;
+    transition:transform .12s ease, box-shadow .12s ease;
     position:relative;
   }
-  .tab:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(42,32,22,0.9);}
-  .tab .num{font-family:"Noto Serif TC",serif;font-weight:900;font-size:20px;}
-  .tab .label{font-size:10px;color:var(--ink-soft);margin-top:2px;letter-spacing:1px;}
-  .tab.active{background:var(--vermillion);border-color:var(--vermillion);color:#fff;}
-  .tab.active .label{color:#F4DCD6;}
-  .tab.money{background:var(--jade);border-color:var(--jade);color:#fff;}
-  .tab.money .label{color:#DCEDE3;}
-  .tab.money.active{background:var(--vermillion);border-color:var(--vermillion);}
+  .tab:active{transform:translateY(2px);}
+  .tab .num{font-family:var(--disp);font-weight:700;font-size:19px;color:var(--ink);}
+  .tab .label{font-size:9.5px;color:var(--ink-soft);margin-top:3px;letter-spacing:1px;font-family:var(--mono);}
+  .tab.active{background:linear-gradient(160deg,var(--accent-soft),var(--card));border-color:var(--accent);box-shadow:0 0 0 1px var(--accent), 0 0 16px rgba(53,231,199,.35);}
+  .tab.active .num{color:var(--accent);}
+  .tab.active .label{color:var(--accent);}
+  .tab.money.active,.tab.bag.active{border-color:var(--accent3);box-shadow:0 0 0 1px var(--accent3), 0 0 16px rgba(140,124,255,.35);}
+  .tab.money.active .num,.tab.money.active .label,.tab.bag.active .num,.tab.bag.active .label{color:var(--accent3);}
   .tab.bag{border-style:dashed;}
   .tab-del{
-    position:absolute;top:-7px;right:-7px;width:20px;height:20px;border-radius:50%;
-    background:var(--ink);color:#fff;border:2px solid var(--bg);font-size:11px;
+    position:absolute;top:-7px;right:-7px;width:19px;height:19px;border-radius:50%;
+    background:var(--accent2);color:#170208;border:2px solid var(--bg);font-size:10px;
     display:flex;align-items:center;justify-content:center;cursor:pointer;
   }
   .tab-add{
-    flex:none;width:74px;height:74px;border:2px dashed var(--ink-soft);border-radius:16px;
-    display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--ink-soft);
+    flex:none;width:72px;height:72px;border:1px dashed var(--line-strong);border-radius:14px;
+    display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--accent);
     background:transparent;cursor:pointer;
   }
 
   /* ===== content ===== */
   .content{padding:22px 20px 30px;}
+  .content.locked input, .content.locked textarea, .content.locked select{pointer-events:none;opacity:.7;}
+  .content.locked .btn, .content.locked .stop-del, .content.locked .del, .content.locked .x{display:none !important;}
   .section-title{
-    font-family:"Noto Serif TC",serif;font-weight:900;font-size:22px;
-    margin:0 0 4px;display:flex;align-items:center;gap:8px;
+    font-family:"Noto Sans TC",var(--disp);font-weight:900;font-size:20px;
+    margin:0 0 4px;display:flex;align-items:center;gap:8px;color:var(--ink);
   }
-  .section-title .bar{width:5px;height:20px;background:var(--vermillion);border-radius:3px;}
-  .section-desc{font-size:12.5px;color:var(--ink-soft);margin:0 0 16px;line-height:1.7;}
+  .section-title .bar{width:4px;height:18px;background:linear-gradient(180deg,var(--accent),var(--accent3));border-radius:3px;}
+  .section-desc{font-size:12px;color:var(--ink-soft);margin:0 0 16px;line-height:1.8;}
 
   /* ---- day meta editable row ---- */
   .day-meta{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
   .pill-input{
-    border:2px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;
-    background:var(--card);font-family:inherit;color:var(--ink);
+    border:1px solid var(--line-strong);border-radius:999px;padding:7px 14px;font-size:13px;
+    background:var(--card);font-family:var(--mono);color:var(--ink);
   }
-  .pill-input.date{width:110px;}
-  .pill-input.title{flex:1;min-width:140px;font-weight:700;}
+  .pill-input.date{width:100px;}
+  .pill-input.title{flex:1;min-width:140px;font-weight:700;font-family:"Noto Sans TC",sans-serif;}
 
   .stat-row{
-    display:flex;border:2px solid var(--line);border-radius:14px;overflow:hidden;
+    display:flex;border:1px solid var(--line);border-radius:14px;overflow:hidden;
     margin-bottom:18px;background:var(--card);box-shadow:var(--shadow);
   }
   .stat{flex:1;padding:14px;text-align:center;}
-  .stat + .stat{border-left:2px solid var(--line);}
-  .stat .k{font-size:11px;color:var(--ink-soft);margin-bottom:4px;}
-  .stat .v{font-family:"Noto Serif TC",serif;font-weight:900;font-size:20px;color:var(--vermillion);}
+  .stat + .stat{border-left:1px solid var(--line);}
+  .stat .k{font-size:10.5px;color:var(--ink-soft);margin-bottom:4px;letter-spacing:.5px;}
+  .stat .v{font-family:var(--disp);font-weight:700;font-size:19px;color:var(--accent);}
 
   /* ---- timeline ---- */
   .timeline{display:flex;flex-direction:column;gap:0;}
   .transport-row{
-    display:flex;align-items:center;gap:10px;padding:10px 4px 10px 6px;font-size:13px;
-    color:var(--ink-soft);border-bottom:1px dashed #cabf9f;
+    display:flex;align-items:center;gap:6px;padding:10px 4px 10px 6px;font-size:12.5px;
+    color:var(--ink-soft);border-bottom:1px dashed var(--line);
+    flex-wrap:wrap;row-gap:6px;
   }
-  .transport-row .ic{font-size:17px;}
+  .transport-row .ic{font-size:16px;flex:none;}
+  .transport-row select{max-width:76px;flex:none;background:transparent;border:none;color:var(--ink);font-family:inherit;font-weight:700;}
   .transport-row .mode{font-weight:700;color:var(--ink);}
-  .transport-row .from-to{flex:1;}
-  .transport-row input{border:none;background:transparent;font-family:inherit;color:inherit;outline:none;}
-  .transport-row .num-input{width:44px;text-align:right;font-weight:700;color:var(--ink);}
-  .transport-row .unit{font-size:11px;}
-  .transport-row .del{cursor:pointer;color:var(--vermillion);font-size:15px;padding:0 2px;}
+  .transport-row .from-to{flex:1 1 60px;min-width:44px;width:0;}
+  .transport-row input{border:none;background:transparent;font-family:inherit;color:inherit;outline:none;min-width:0;width:100%;}
+  .transport-row .num-input{width:34px;flex:none;text-align:right;font-weight:700;color:var(--accent);font-family:var(--mono);}
+  .transport-row .unit{font-size:10px;flex:none;}
+  .transport-row .del{cursor:pointer;color:var(--accent2);font-size:15px;padding:0 2px;flex:none;}
 
   .stop-card{
-    border:2px solid var(--line);border-radius:16px;background:var(--card);
+    border:1px solid var(--line);border-radius:16px;background:var(--card);
     padding:16px;margin:10px 0 22px;position:relative;box-shadow:var(--shadow);
+    border-left:2px solid var(--accent);
   }
   .stop-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
   .stop-time{
-    border:2px solid var(--line);border-radius:10px;padding:6px 10px;font-family:"Noto Serif TC",serif;
-    font-weight:900;font-size:17px;width:78px;text-align:center;background:var(--bg);
+    border:1px solid var(--line-strong);border-radius:10px;padding:6px 10px;font-family:var(--mono);
+    font-weight:700;font-size:16px;width:74px;text-align:center;background:var(--bg-alt);color:var(--accent);
   }
   .tag{
-    font-size:11px;font-weight:700;padding:5px 10px;border-radius:999px;flex:none;white-space:nowrap;
+    font-size:10.5px;font-weight:700;padding:5px 10px;border-radius:999px;flex:none;white-space:nowrap;
   }
-  .tag-select{border:none;-webkit-appearance:none;appearance:none;font-family:inherit;cursor:pointer;}
+  .tag-select{border:1px solid transparent;-webkit-appearance:none;appearance:none;font-family:inherit;cursor:pointer;}
   .stop-title{
-    flex:1;font-size:17px;font-weight:700;border:none;background:transparent;
-    font-family:"Noto Serif TC",serif;outline:none;color:var(--ink);min-width:0;
+    flex:1;font-size:16px;font-weight:700;border:none;background:transparent;
+    font-family:"Noto Sans TC",sans-serif;outline:none;color:var(--ink);min-width:0;
   }
-  .stop-del{color:var(--vermillion);font-size:16px;cursor:pointer;flex:none;}
+  .stop-del{color:var(--accent2);font-size:16px;cursor:pointer;flex:none;}
   .stop-desc{
-    width:100%;border:none;background:var(--bg-alt);border-radius:10px;padding:10px 12px;
-    font-size:13px;line-height:1.7;color:var(--ink);resize:none;font-family:inherit;outline:none;
+    width:100%;border:1px solid var(--line);background:var(--bg-alt);border-radius:10px;padding:10px 12px;
+    font-size:13px;line-height:1.8;color:var(--ink);resize:none;font-family:inherit;outline:none;
     margin-bottom:10px;
   }
   .stop-meta{display:flex;gap:8px;flex-wrap:wrap;}
   .chip-input{
-    display:flex;align-items:center;gap:6px;border:2px solid var(--line);border-radius:999px;
-    padding:6px 12px;font-size:12px;background:var(--bg);flex:1;min-width:130px;
+    display:flex;align-items:center;gap:6px;border:1px solid var(--line-strong);border-radius:999px;
+    padding:6px 12px;font-size:12px;background:var(--bg-alt);flex:1;min-width:130px;
   }
   .chip-input input{border:none;background:transparent;outline:none;font-family:inherit;font-size:inherit;color:var(--ink);width:100%;}
 
   .add-row{display:flex;gap:8px;margin:12px 0 26px;}
   .btn{
-    border:2px solid var(--line);border-radius:12px;padding:10px 14px;font-size:13px;font-weight:700;
-    background:var(--card);cursor:pointer;font-family:inherit;color:var(--ink);
+    border:1px solid var(--line-strong);border-radius:12px;padding:10px 14px;font-size:13px;font-weight:700;
+    background:var(--card);cursor:pointer;font-family:"Noto Sans TC",sans-serif;color:var(--ink);
     display:flex;align-items:center;gap:6px;box-shadow:var(--shadow);
   }
-  .btn:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(42,32,22,0.9);}
+  .btn:active{transform:translateY(2px);}
   .btn.ghost{background:transparent;box-shadow:none;}
-  .btn.jade{background:var(--jade);color:#fff;border-color:var(--jade);}
-  .btn.vermillion{background:var(--vermillion);color:#fff;border-color:var(--vermillion);}
+  .btn.jade{background:var(--accent);color:#06110D;border-color:var(--accent);}
+  .btn.vermillion{background:var(--accent2);color:#1A0208;border-color:var(--accent2);}
+  .btn.violet{background:var(--accent3);color:#0B0620;border-color:var(--accent3);}
   .btn.block{width:100%;justify-content:center;}
   .btn.sm{padding:7px 10px;font-size:12px;}
 
   /* ---- flights ---- */
   .flight-card{
-    border:2px solid var(--line);border-radius:16px;background:var(--card);padding:18px;
+    border:1px solid var(--line);border-radius:16px;background:var(--card);padding:18px;
     margin-bottom:18px;box-shadow:var(--shadow);
   }
   .flight-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
-  .flight-head .ttl{font-family:"Noto Serif TC",serif;font-weight:900;font-size:18px;display:flex;align-items:center;gap:8px;}
-  .flight-head .badge{background:var(--jade-soft);color:var(--jade);font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;}
-  .field-label{font-size:11px;color:var(--ink-soft);margin:10px 0 5px;}
+  .flight-head .ttl{font-family:"Noto Sans TC",sans-serif;font-weight:900;font-size:17px;display:flex;align-items:center;gap:8px;}
+  .flight-head .badge{background:var(--accent-soft);color:var(--accent);font-size:10.5px;font-weight:700;padding:4px 10px;border-radius:999px;font-family:var(--mono);}
+  .field-label{font-size:10.5px;color:var(--ink-soft);margin:10px 0 5px;letter-spacing:.5px;}
   .field-input{
-    width:100%;border:2px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;
-    font-family:inherit;background:var(--bg);color:var(--ink);outline:none;
+    width:100%;border:1px solid var(--line-strong);border-radius:12px;padding:10px 12px;font-size:14px;
+    font-family:inherit;background:var(--bg-alt);color:var(--ink);outline:none;
   }
   .two-col{display:flex;gap:10px;}
   .two-col > div{flex:1;}
   .airport-row{display:flex;align-items:center;gap:8px;}
-  .airport-row .arrow{color:var(--vermillion);font-size:18px;}
+  .airport-row .arrow{color:var(--accent);font-size:18px;}
 
   /* ---- luggage ---- */
   .lug-group{margin-bottom:20px;}
   .lug-group h3{
-    font-family:"Noto Serif TC",serif;font-size:15px;margin:0 0 8px;color:var(--vermillion);
-    display:flex;align-items:center;gap:6px;
+    font-family:"Noto Sans TC",sans-serif;font-size:14px;margin:0 0 8px;color:var(--accent);
+    display:flex;align-items:center;gap:6px;letter-spacing:.5px;
   }
   .lug-item{
-    display:flex;align-items:center;gap:10px;padding:10px 12px;border:2px solid var(--line);
+    display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);
     border-radius:12px;background:var(--card);margin-bottom:8px;
   }
-  .lug-item.checked{background:var(--jade-soft);border-color:var(--jade);}
+  .lug-item.checked{background:var(--accent-soft);border-color:var(--accent);}
   .lug-item .box{
-    width:20px;height:20px;border:2px solid var(--line);border-radius:6px;flex:none;cursor:pointer;
-    display:flex;align-items:center;justify-content:center;font-size:13px;background:#fff;
+    width:19px;height:19px;border:1px solid var(--line-strong);border-radius:6px;flex:none;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;font-size:12px;background:var(--bg-alt);color:var(--accent);
   }
-  .lug-item.checked .box{background:var(--jade);border-color:var(--jade);color:#fff;}
+  .lug-item.checked .box{background:var(--accent);border-color:var(--accent);color:#06110D;}
   .lug-item input{
     flex:1;border:none;background:transparent;font-family:inherit;font-size:14px;outline:none;color:var(--ink);
   }
   .lug-item.checked input{text-decoration:line-through;color:var(--ink-soft);}
-  .lug-item .del{color:var(--vermillion);cursor:pointer;font-size:14px;}
+  .lug-item .del{color:var(--accent2);cursor:pointer;font-size:14px;}
   .lug-add{display:flex;gap:8px;}
   .lug-add input{flex:1;}
 
   /* ---- billing ---- */
   .sync-badge{
-    border:2px solid var(--jade);color:var(--jade);border-radius:14px;padding:14px;
-    text-align:center;font-weight:700;font-size:14px;margin-bottom:14px;background:var(--jade-soft);
-    display:flex;align-items:center;justify-content:center;gap:8px;
+    border:1px solid var(--accent);color:var(--accent);border-radius:14px;padding:13px;
+    text-align:center;font-weight:700;font-size:13px;margin-bottom:14px;background:var(--accent-soft);
+    display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--mono);letter-spacing:.5px;
   }
   .member-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
   .member-pill{
-    display:flex;align-items:center;gap:6px;border:2px solid var(--line);border-radius:999px;
+    display:flex;align-items:center;gap:6px;border:1px solid var(--line-strong);border-radius:999px;
     padding:7px 12px 7px 14px;background:var(--bg-alt);font-size:13px;font-weight:700;
   }
   .member-pill .x{
-    width:16px;height:16px;border-radius:50%;background:var(--vermillion);color:#fff;font-size:10px;
+    width:16px;height:16px;border-radius:50%;background:var(--accent2);color:#170208;font-size:10px;
     display:flex;align-items:center;justify-content:center;cursor:pointer;
   }
   .member-add{display:flex;gap:8px;margin-bottom:22px;}
   .member-add input{flex:1;}
 
   .fam-card{
-    border:2px solid var(--line);border-radius:14px;background:var(--card);padding:14px 16px;
+    border:1px solid var(--line);border-radius:14px;background:var(--card);padding:14px 16px;
     margin-bottom:10px;box-shadow:var(--shadow);
   }
   .fam-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-  .fam-name{font-family:"Noto Serif TC",serif;font-weight:900;font-size:16px;display:flex;align-items:center;gap:8px;}
-  .fam-name .cnt{font-size:11px;font-weight:400;background:var(--brass-soft);color:var(--brass);padding:3px 8px;border-radius:999px;}
+  .fam-name{font-family:"Noto Sans TC",sans-serif;font-weight:900;font-size:15px;display:flex;align-items:center;gap:8px;}
+  .fam-name .cnt{font-size:10.5px;font-weight:400;background:var(--accent3-soft);color:var(--accent3);padding:3px 8px;border-radius:999px;font-family:var(--mono);}
   .fam-fields{display:flex;gap:10px;}
   .fam-fields > div{flex:1;}
   .fam-fields label{font-size:10px;color:var(--ink-soft);display:block;margin-bottom:4px;}
-  .fam-fields input{width:100%;border:2px solid var(--line);border-radius:10px;padding:8px 10px;font-family:inherit;font-size:14px;background:var(--bg);}
+  .fam-fields input{width:100%;border:1px solid var(--line-strong);border-radius:10px;padding:8px 10px;font-family:var(--mono);font-size:14px;background:var(--bg-alt);color:var(--ink);}
+
+  .rate-panel{
+    border:1px solid var(--accent3);border-radius:14px;background:var(--accent3-soft);
+    padding:14px 16px;margin-bottom:20px;
+  }
+  .rate-title{font-size:11.5px;color:var(--accent3);font-weight:700;margin-bottom:10px;font-family:var(--mono);letter-spacing:.5px;}
+  .rate-grid{display:flex;flex-direction:column;gap:8px;}
+  .rate-item{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink);}
+  .rate-item .cc{width:64px;flex:none;font-family:var(--mono);font-weight:700;color:var(--ink);}
+  .rate-item input{
+    width:74px;border:1px solid var(--line-strong);border-radius:8px;padding:6px 8px;background:var(--card);
+    color:var(--ink);font-family:var(--mono);font-size:12.5px;
+  }
+  .rate-item .eq{color:var(--ink-soft);}
+  .rate-base-row{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:12.5px;}
+  .rate-base-row select{
+    border:1px solid var(--line-strong);border-radius:8px;padding:7px 10px;background:var(--card);
+    color:var(--accent3);font-family:var(--mono);font-weight:700;
+  }
 
   .expense-row{
-    border:2px solid var(--line);border-radius:14px;background:var(--card);padding:12px 14px;
+    border:1px solid var(--line);border-radius:14px;background:var(--card);padding:12px 14px;
     margin-bottom:10px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow);
   }
   .expense-row .r1{display:flex;gap:8px;}
-  .expense-row .r1 input[type=text]{flex:2;}
-  .expense-row .r1 input[type=number]{flex:1;text-align:right;}
-  .expense-row select{
-    border:2px solid var(--line);border-radius:10px;padding:8px 10px;font-family:inherit;background:var(--bg);font-size:13px;
-  }
-  .expense-row input{border:2px solid var(--line);border-radius:10px;padding:8px 10px;font-family:inherit;font-size:13px;background:var(--bg);color:var(--ink);}
+  .expense-row .r1 input[type=text]{flex:1;}
   .expense-row .r2{display:flex;gap:8px;align-items:center;}
-  .expense-row .del{color:var(--vermillion);cursor:pointer;font-size:14px;margin-left:auto;}
+  .expense-row .r2 select.cur{width:64px;flex:none;}
+  .expense-row .r2 input[type=number]{width:84px;flex:none;text-align:right;}
+  .expense-row .conv{font-family:var(--mono);font-size:11.5px;color:var(--accent);flex:1;text-align:right;}
+  .expense-row .r3{display:flex;gap:8px;align-items:center;}
+  .expense-row select{
+    border:1px solid var(--line-strong);border-radius:10px;padding:8px 10px;font-family:inherit;background:var(--bg-alt);font-size:12.5px;color:var(--ink);
+  }
+  .expense-row input{border:1px solid var(--line-strong);border-radius:10px;padding:8px 10px;font-family:inherit;font-size:13px;background:var(--bg-alt);color:var(--ink);}
+  .expense-row .del{color:var(--accent2);cursor:pointer;font-size:13px;margin-left:auto;font-family:var(--mono);}
 
   .settle-card{
-    border:2px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);
+    border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);
     margin:18px 0;box-shadow:var(--shadow);
   }
-  .settle-head{background:var(--ink);color:var(--bg);padding:12px 16px;font-family:"Noto Serif TC",serif;font-weight:900;font-size:15px;}
+  .settle-head{background:var(--card2);color:var(--accent);padding:12px 16px;font-family:var(--mono);font-weight:700;font-size:13px;letter-spacing:.5px;border-bottom:1px solid var(--line);}
   .settle-row{
     display:flex;justify-content:space-between;align-items:center;padding:12px 16px;
-    border-top:1px dashed #cabf9f;font-size:13px;
+    border-top:1px dashed var(--line);font-size:13px;
   }
-  .settle-row .nm{font-weight:700;}
-  .settle-row .amt{font-family:"Noto Serif TC",serif;font-weight:900;font-size:15px;}
-  .amt.refund{color:var(--jade);}
-  .amt.owe{color:var(--vermillion);}
+  .settle-row .nm{font-weight:700;color:var(--ink);}
+  .settle-row .amt{font-family:var(--mono);font-weight:700;font-size:14.5px;}
+  .amt.refund{color:var(--accent);}
+  .amt.owe{color:var(--accent2);}
 
   .totals{display:flex;gap:10px;margin-bottom:6px;}
-  .totals .stat .v{color:var(--jade);}
+  .totals .stat{border:1px solid var(--line);border-radius:14px;background:var(--card);}
+  .totals .stat .v{color:var(--accent2);}
+  .totals .stat:first-child .v{color:var(--accent);}
+
+  /* ---- archive ---- */
+  .arc-card{
+    border:1px solid var(--line);border-radius:16px;background:var(--card);padding:16px;
+    margin-bottom:12px;box-shadow:var(--shadow);border-left:2px solid var(--accent3);
+  }
+  .arc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px;}
+  .arc-title{font-family:"Noto Sans TC",sans-serif;font-weight:900;font-size:16px;color:var(--ink);}
+  .arc-date{font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);white-space:nowrap;}
+  .arc-stats{font-family:var(--mono);font-size:12px;color:var(--accent3);margin-bottom:12px;}
+  .arc-actions{display:flex;gap:8px;}
 
   /* ---- stamp fab ---- */
   .stamp{
     position:fixed;bottom:26px;right:calc(50% - 260px + 20px);
-    width:56px;height:56px;border-radius:50%;
-    background:var(--vermillion);color:#fff;border:3px solid var(--card);
-    font-family:"Noto Serif TC",serif;font-weight:900;font-size:20px;
+    width:54px;height:54px;border-radius:50%;
+    background:var(--card);color:var(--accent);border:1px solid var(--accent);
+    font-family:var(--mono);font-weight:700;font-size:12px;
     display:flex;align-items:center;justify-content:center;
-    box-shadow:0 4px 10px rgba(42,32,22,.35);cursor:pointer;
-    transform:rotate(-8deg);transition:transform .15s ease;
-    z-index:50;
+    box-shadow:0 0 0 1px var(--accent), 0 6px 18px rgba(53,231,199,.3);cursor:pointer;
+    transition:all .15s ease;z-index:50;
   }
-  @media (max-width:560px){
-    .stamp{right:20px;}
-  }
-  .stamp:active{transform:rotate(-8deg) scale(.9);}
-  .stamp.on{background:var(--jade);}
+  @media (max-width:560px){ .stamp{right:20px;} }
+  .stamp:active{transform:scale(.9);}
+  .stamp.on{background:var(--accent);color:#06110D;}
   .toast{
     position:fixed;bottom:96px;left:50%;transform:translateX(-50%);
-    background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-size:12.5px;
-    opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:60;white-space:nowrap;
+    background:var(--card2);color:var(--accent);border:1px solid var(--accent);padding:10px 18px;border-radius:999px;font-size:12px;
+    opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:60;white-space:nowrap;font-family:var(--mono);
   }
   .toast.show{opacity:1;}
 
   .empty{
-    text-align:center;color:var(--ink-soft);font-size:13px;padding:30px 10px;border:2px dashed var(--ink-soft);
-    border-radius:14px;
+    text-align:center;color:var(--ink-soft);font-size:13px;padding:30px 10px;border:1px dashed var(--line-strong);
+    border-radius:14px;font-family:var(--mono);
   }
 </style>
 </head>
 <body>
 <div id="app">
   <div class="hero">
-    <span class="hero-eyebrow" id="dayCountBadge">5 DAYS</span>
-    <input id="tripTitle" class="hero-title-input" style="display:none">
+    <div class="hero-row">
+      <span class="hero-eyebrow" id="dayCountBadge">5 DAYS</span>
+      <button class="icon-btn" onclick="toggleArchive()">📁 存檔紀錄</button>
+    </div>
     <h1 id="tripTitleView" contenteditable="false"></h1>
     <textarea id="tripSub" class="hero-sub" rows="2"></textarea>
     <div class="base-note">
       <div class="icon">🏨</div>
       <div style="width:100%">
-        <b>住宿基地：</b>
+        <b>住宿基地</b>
         <textarea id="baseNote" rows="2"></textarea>
       </div>
     </div>
+  </div>
+
+  <div class="ro-banner" id="roBanner">
+    <span></span>
+    <button onclick="exitArchiveView()">返回目前行程</button>
   </div>
 
   <div class="tabbar" id="tabbar"></div>
@@ -348,18 +434,30 @@
 /* ============ 資料模型 ============ */
 const CN_NUM = ["","壹","貳","參","肆","伍","陸","柒","捌","玖","拾"];
 const CATS = [
-  {v:"景點",bg:"var(--vermillion-soft)",fg:"var(--vermillion)"},
-  {v:"批發市場",bg:"var(--jade-soft)",fg:"var(--jade)"},
-  {v:"批發街",bg:"var(--jade-soft)",fg:"var(--jade)"},
-  {v:"餐廳",bg:"var(--brass-soft)",fg:"var(--brass)"},
-  {v:"住宿",bg:"#E4DCEE",fg:"#6B4E9B"},
-  {v:"其他",bg:"var(--bg-alt)",fg:"var(--ink-soft)"}
+  {v:"景點",bg:"var(--accent2-soft)",fg:"var(--accent2)"},
+  {v:"批發市場",bg:"var(--accent-soft)",fg:"var(--accent)"},
+  {v:"批發街",bg:"var(--accent-soft)",fg:"var(--accent)"},
+  {v:"餐廳",bg:"var(--accent3-soft)",fg:"var(--accent3)"},
+  {v:"住宿",bg:"rgba(140,124,255,.22)",fg:"#B7ACFF"},
+  {v:"其他",bg:"rgba(255,255,255,.08)",fg:"var(--ink-soft)"}
 ];
 const TMODES = [
   {v:"打車",ic:"🚕"},{v:"步行",ic:"🚶"},{v:"地鐵",ic:"🚇"},{v:"公車",ic:"🚌"},{v:"高鐵",ic:"🚄"}
 ];
+const CURRENCIES = [
+  {code:"TWD", label:"新台幣", sym:"NT$"},
+  {code:"CNY", label:"人民幣", sym:"¥"},
+  {code:"JPY", label:"日圓",  sym:"¥"},
+  {code:"USD", label:"美元",  sym:"$"},
+  {code:"HKD", label:"港幣",  sym:"HK$"},
+  {code:"EUR", label:"歐元",  sym:"€"},
+  {code:"KRW", label:"韓元",  sym:"₩"}
+];
+// 1 單位外幣 = 多少新台幣（僅為預設參考值，可在分帳頁自行調整）
+const DEFAULT_RATES = {TWD:1, CNY:4.4, JPY:0.21, USD:31.5, HKD:4.05, EUR:34.2, KRW:0.023};
 
 function uid(){ return Math.random().toString(36).slice(2,9); }
+function curSym(code){ return (CURRENCIES.find(c=>c.code===code)||{sym:code+" "}).sym; }
 
 function defaultState(){
   return {
@@ -396,35 +494,54 @@ function defaultState(){
       {id:uid(),group:"衣物",item:"薄外套",checked:false}
     ],
     billing:{
+      baseCurrency:"TWD",
+      rates:Object.assign({},DEFAULT_RATES),
       members:[
         {id:uid(),name:"林家",count:4,deposit:0},
         {id:uid(),name:"吳家",count:2,deposit:0},
         {id:uid(),name:"伍家",count:2,deposit:0}
       ],
       expenses:[]
-    }
+    },
+    archive:[]
   };
+}
+
+function migrate(s){
+  s.archive = s.archive || [];
+  s.billing = s.billing || {members:[],expenses:[]};
+  if(!s.billing.baseCurrency) s.billing.baseCurrency = "TWD";
+  if(!s.billing.rates) s.billing.rates = Object.assign({},DEFAULT_RATES);
+  CURRENCIES.forEach(c=>{ if(s.billing.rates[c.code]==null) s.billing.rates[c.code]=DEFAULT_RATES[c.code]; });
+  (s.billing.expenses||[]).forEach(e=>{ if(!e.currency) e.currency = s.billing.baseCurrency; });
+  return s;
 }
 
 let state = null;
 let tab = "flights"; // "flights" | dayId | "luggage" | "billing"
 let editMode = false;
-const STORE_KEY = "trip-data-v1";
+let showArchive = false;
+let viewingArchive = null;      // 唯讀：目前正在查看的封存資料
+let viewingArchiveMeta = null;  // {name, savedAt}
+const STORE_KEY = "trip-data-v2";
+
+function DATA(){ return viewingArchive || state; }
+function RO(){ return !!viewingArchive; }
 
 /* ============ 存取 ============ */
 // 這個網頁可能跑在兩種環境：
 // 1) Claude 的 artifact 預覽視窗 → 有 window.storage，可雲端同步
-// 2) 匯出後自架網站 / GitHub Pages → 沒有 window.storage，改用瀏覽器 localStorage（僅存在你自己的裝置上，不會同步給別人）
+// 2) 匯出後自架網站 / GitHub Pages → 沒有 window.storage，改用瀏覽器 localStorage（僅存在你自己的裝置上）
 const HAS_CLOUD_STORAGE = (typeof window.storage !== "undefined" && window.storage && typeof window.storage.get === "function");
 
 async function load(){
   try{
     if(HAS_CLOUD_STORAGE){
       const r = await window.storage.get(STORE_KEY, true);
-      state = r ? JSON.parse(r.value) : defaultState();
+      state = r ? migrate(JSON.parse(r.value)) : defaultState();
     }else{
       const raw = localStorage.getItem(STORE_KEY);
-      state = raw ? JSON.parse(raw) : defaultState();
+      state = raw ? migrate(JSON.parse(raw)) : defaultState();
     }
   }catch(e){
     state = defaultState();
@@ -460,24 +577,51 @@ function catStyle(cat){
   const c = CATS.find(x=>x.v===cat) || CATS[CATS.length-1];
   return `background:${c.bg};color:${c.fg}`;
 }
-function fmtMoney(n){
-  n = Number(n)||0;
-  return (n<0?"-¥":"¥") + Math.abs(n).toLocaleString("zh-Hant",{maximumFractionDigits:0});
+function toBase(amount, currency){
+  const b = DATA().billing;
+  const rates = b.rates || DEFAULT_RATES;
+  const rc = rates[currency] ?? 1;
+  const rb = rates[b.baseCurrency] ?? 1;
+  return (Number(amount)||0) * rc / rb;
+}
+function fmtMoney(n, code){
+  code = code || DATA().billing.baseCurrency;
+  const sym = curSym(code);
+  const v = Math.round(Number(n)||0);
+  return (v<0?"-":"") + sym + Math.abs(v).toLocaleString("zh-Hant");
 }
 
 /* ============ 渲染：頂層 ============ */
 function render(){
-  document.getElementById("dayCountBadge").textContent = state.days.length + " DAYS";
-  document.getElementById("tripTitleView").innerHTML = escapeHtml(state.meta.title);
-  document.getElementById("tripSub").value = state.meta.sub;
-  document.getElementById("baseNote").value = state.meta.base;
-  document.getElementById("tripSub").readOnly = !editMode;
-  document.getElementById("baseNote").readOnly = !editMode;
-  document.getElementById("tripTitleView").contentEditable = editMode ? "true":"false";
+  const d = DATA();
+  document.getElementById("dayCountBadge").textContent = d.days.length + " DAYS";
+  document.getElementById("tripTitleView").innerHTML = escapeHtml(d.meta.title);
+  document.getElementById("tripSub").value = d.meta.sub;
+  document.getElementById("baseNote").value = d.meta.base;
+  document.getElementById("tripSub").readOnly = !editMode || RO();
+  document.getElementById("baseNote").readOnly = !editMode || RO();
+  document.getElementById("tripTitleView").contentEditable = (editMode && !RO()) ? "true":"false";
 
-  renderTabs();
-  renderContent();
-  document.getElementById("stampBtn").classList.toggle("on", editMode);
+  const banner = document.getElementById("roBanner");
+  if(RO()){
+    banner.style.display = "flex";
+    const savedStr = viewingArchiveMeta && viewingArchiveMeta.savedAt ? new Date(viewingArchiveMeta.savedAt).toLocaleString("zh-Hant") : "";
+    banner.querySelector("span").innerHTML = `📁 正在查看封存行程「<b>${escapeHtml(viewingArchiveMeta?viewingArchiveMeta.name:"")}</b>」・${savedStr}（唯讀）`;
+  }else{
+    banner.style.display = "none";
+  }
+
+  if(showArchive){
+    document.getElementById("tabbar").innerHTML = "";
+    document.getElementById("content").innerHTML = archiveView();
+    document.getElementById("content").className = "content";
+  }else{
+    renderTabs();
+    renderContent();
+  }
+  const stamp = document.getElementById("stampBtn");
+  stamp.style.display = (RO() || showArchive) ? "none" : "flex";
+  stamp.classList.toggle("on", editMode);
 }
 
 function escapeHtml(s){
@@ -485,13 +629,14 @@ function escapeHtml(s){
 }
 
 function renderTabs(){
+  const d = DATA();
   const bar = document.getElementById("tabbar");
   let html = `<div class="tab ${tab==='flights'?'active':''}" onclick="setTab('flights')">
       <div class="num" style="font-size:22px">✈️</div><div class="label">航班</div>
     </div>`;
-  state.days.forEach((d,i)=>{
-    html += `<div class="tab ${tab===d.id?'active':''}" onclick="setTab('${d.id}')" style="position:relative">
-        ${editMode && state.days.length>1 ? `<div class="tab-del" onclick="event.stopPropagation();delDay('${d.id}')">✕</div>`:""}
+  d.days.forEach((day,i)=>{
+    html += `<div class="tab ${tab===day.id?'active':''}" onclick="setTab('${day.id}')" style="position:relative">
+        ${editMode && !RO() && d.days.length>1 ? `<div class="tab-del" onclick="event.stopPropagation();delDay('${day.id}')">✕</div>`:""}
         <div class="num">${CN_NUM[i+1]||(i+1)}</div><div class="label">DAY ${i+1}</div>
       </div>`;
   });
@@ -501,7 +646,7 @@ function renderTabs(){
   html += `<div class="tab money ${tab==='billing'?'active':''}" onclick="setTab('billing')">
       <div class="num" style="font-size:20px">💰</div><div class="label">分帳</div>
     </div>`;
-  if(editMode){
+  if(editMode && !RO()){
     html += `<div class="tab-add" onclick="addDay()">＋</div>`;
   }
   bar.innerHTML = html;
@@ -509,8 +654,15 @@ function renderTabs(){
 
 function setTab(t){ tab = t; render(); }
 
+function toggleArchive(){
+  showArchive = !showArchive;
+  if(showArchive){ viewingArchive = null; viewingArchiveMeta = null; }
+  render();
+}
+
 function renderContent(){
   const c = document.getElementById("content");
+  c.className = "content" + (RO() ? " locked" : "");
   if(tab==="flights") c.innerHTML = flightsView();
   else if(tab==="luggage") c.innerHTML = luggageView();
   else if(tab==="billing") c.innerHTML = billingView();
@@ -519,7 +671,7 @@ function renderContent(){
 
 /* ============ 航班 ============ */
 function flightsView(){
-  const f = state.flights;
+  const f = DATA().flights;
   const leg = (key,label,badge)=>{
     const v = f[key];
     return `
@@ -529,27 +681,27 @@ function flightsView(){
         <div class="badge">${badge}</div>
       </div>
       <div class="field-label">日期</div>
-      <input class="field-input" type="date" value="${v.date}" onchange="f_upd('${key}','date',this.value)" ${dis()}>
+      <input class="field-input" type="date" value="${v.date}" onchange="f_upd('${key}','date',this.value)">
       <div class="field-label">機場</div>
       <div class="airport-row">
-        <input class="field-input" value="${escapeHtml(v.from)}" onchange="f_upd('${key}','from',this.value)" ${dis()}>
+        <input class="field-input" value="${escapeHtml(v.from)}" onchange="f_upd('${key}','from',this.value)">
         <div class="arrow">→</div>
-        <input class="field-input" value="${escapeHtml(v.to)}" onchange="f_upd('${key}','to',this.value)" ${dis()}>
+        <input class="field-input" value="${escapeHtml(v.to)}" onchange="f_upd('${key}','to',this.value)">
       </div>
       <div class="two-col">
         <div>
           <div class="field-label">出發時間</div>
-          <input class="field-input" type="time" value="${v.dep}" onchange="f_upd('${key}','dep',this.value)" ${dis()}>
+          <input class="field-input" type="time" value="${v.dep}" onchange="f_upd('${key}','dep',this.value)">
         </div>
         <div>
           <div class="field-label">抵達時間</div>
-          <input class="field-input" type="time" value="${v.arr}" onchange="f_upd('${key}','arr',this.value)" ${dis()}>
+          <input class="field-input" type="time" value="${v.arr}" onchange="f_upd('${key}','arr',this.value)">
         </div>
       </div>
       <div class="field-label">航空公司／航班號</div>
-      <input class="field-input" value="${escapeHtml(v.airline)}" onchange="f_upd('${key}','airline',this.value)" ${dis()}>
+      <input class="field-input" value="${escapeHtml(v.airline)}" onchange="f_upd('${key}','airline',this.value)">
       <div class="field-label">備註</div>
-      <input class="field-input" value="${escapeHtml(v.note)}" onchange="f_upd('${key}','note',this.value)" ${dis()}>
+      <input class="field-input" value="${escapeHtml(v.note)}" onchange="f_upd('${key}','note',this.value)">
     </div>`;
   };
   return `
@@ -559,15 +711,15 @@ function flightsView(){
     ${leg("in","回程","返程")}
   `;
 }
-function dis(){ return editMode ? "" : ""; } // fields always editable; kept for future lock toggle
 function f_upd(key, field, val){
-  state.flights[key][field] = val;
+  if(RO()) return;
+  DATA().flights[key][field] = val;
   save();
 }
 
 /* ============ 每日行程 ============ */
 function dayView(dayId){
-  const d = state.days.find(x=>x.id===dayId);
+  const d = DATA().days.find(x=>x.id===dayId);
   if(!d) return `<div class="empty">找不到這一天</div>`;
   const stops = d.items.filter(i=>i.type==="stop").length;
   const cost = d.items.filter(i=>i.type==="transport").reduce((s,i)=>s+(Number(i.cost)||0),0);
@@ -594,14 +746,15 @@ function dayView(dayId){
   });
   html += `</div>
     <div class="add-row">
-      <div class="btn" onclick="addStop('${d.id}')">📍 新增景點</div>
+      <div class="btn jade" onclick="addStop('${d.id}')">📍 新增景點</div>
       <div class="btn ghost" onclick="addTransport('${d.id}')">🚕 新增交通</div>
     </div>
   `;
   return html;
 }
 function d_upd(dayId, field, val){
-  const d = state.days.find(x=>x.id===dayId);
+  if(RO()) return;
+  const d = DATA().days.find(x=>x.id===dayId);
   d[field]=val; save();
 }
 
@@ -611,15 +764,13 @@ function transportRow(dayId, it){
   return `
   <div class="transport-row">
     <div class="ic">${ic}</div>
-    <select onchange="it_upd('${dayId}','${it.id}','mode',this.value)" style="border:none;background:transparent;font-family:inherit;font-weight:700;color:var(--ink);">
-      ${opts}
-    </select>
+    <select onchange="it_upd('${dayId}','${it.id}','mode',this.value)">${opts}</select>
     <input class="from-to" value="${escapeHtml(it.from)}" placeholder="出發地" onchange="it_upd('${dayId}','${it.id}','from',this.value)">
     <span>→</span>
     <input class="from-to" value="${escapeHtml(it.to)}" placeholder="目的地" onchange="it_upd('${dayId}','${it.id}','to',this.value)">
     <input class="num-input" type="number" value="${it.dur}" onchange="it_upd('${dayId}','${it.id}','dur',this.value)"><span class="unit">分</span>
     <input class="num-input" type="number" value="${it.cost}" onchange="it_upd('${dayId}','${it.id}','cost',this.value)"><span class="unit">¥</span>
-    ${editMode?`<div class="del" onclick="delItem('${dayId}','${it.id}')">✕</div>`:""}
+    ${editMode && !RO() ?`<div class="del" onclick="delItem('${dayId}','${it.id}')">✕</div>`:""}
   </div>`;
 }
 
@@ -631,7 +782,7 @@ function stopCard(dayId, it){
       <input class="stop-time" value="${escapeHtml(it.time)}" onchange="it_upd('${dayId}','${it.id}','time',this.value)">
       <select class="tag tag-select" style="${catStyle(it.cat)}" onchange="it_upd('${dayId}','${it.id}','cat',this.value)">${catOpts}</select>
       <input class="stop-title" value="${escapeHtml(it.title)}" placeholder="景點名稱" onchange="it_upd('${dayId}','${it.id}','title',this.value)">
-      ${editMode?`<div class="stop-del" onclick="delItem('${dayId}','${it.id}')">✕</div>`:""}
+      ${editMode && !RO() ?`<div class="stop-del" onclick="delItem('${dayId}','${it.id}')">✕</div>`:""}
     </div>
     <textarea class="stop-desc" rows="3" placeholder="簡介／備註..." onchange="it_upd('${dayId}','${it.id}','desc',this.value)">${escapeHtml(it.desc)}</textarea>
     <div class="stop-meta">
@@ -641,35 +792,40 @@ function stopCard(dayId, it){
 }
 
 function it_upd(dayId, itemId, field, val){
-  const d = state.days.find(x=>x.id===dayId);
+  if(RO()) return;
+  const d = DATA().days.find(x=>x.id===dayId);
   const it = d.items.find(x=>x.id===itemId);
   it[field]=val; save();
-  if(field==="cat") render();
-  if(field==="mode") render();
+  if(field==="cat" || field==="mode") render();
 }
 function delItem(dayId, itemId){
-  const d = state.days.find(x=>x.id===dayId);
+  if(RO()) return;
+  const d = DATA().days.find(x=>x.id===dayId);
   d.items = d.items.filter(x=>x.id!==itemId);
   save("已刪除"); render();
 }
 function addStop(dayId){
-  const d = state.days.find(x=>x.id===dayId);
+  if(RO()) return;
+  const d = DATA().days.find(x=>x.id===dayId);
   d.items.push({type:"stop",id:uid(),time:"09:00",cat:"景點",title:"",desc:"",addr:""});
   save(); render();
 }
 function addTransport(dayId){
-  const d = state.days.find(x=>x.id===dayId);
+  if(RO()) return;
+  const d = DATA().days.find(x=>x.id===dayId);
   d.items.push({type:"transport",id:uid(),mode:"打車",from:"",to:"",dur:"10",cost:"0"});
   save(); render();
 }
 function addDay(){
-  state.days.push({id:uid(),date:"",title:"新的一天",items:[]});
-  tab = state.days[state.days.length-1].id;
+  if(RO()) return;
+  DATA().days.push({id:uid(),date:"",title:"新的一天",items:[]});
+  tab = DATA().days[DATA().days.length-1].id;
   save(); render();
 }
 function delDay(dayId){
+  if(RO()) return;
   if(!confirm("確定要刪除這一天的行程嗎？")) return;
-  state.days = state.days.filter(x=>x.id!==dayId);
+  DATA().days = DATA().days.filter(x=>x.id!==dayId);
   if(tab===dayId) tab = "flights";
   save("已刪除"); render();
 }
@@ -677,7 +833,7 @@ function delDay(dayId){
 /* ============ 行李 ============ */
 function luggageView(){
   const groups = {};
-  state.luggage.forEach(it=>{
+  DATA().luggage.forEach(it=>{
     groups[it.group] = groups[it.group]||[];
     groups[it.group].push(it);
   });
@@ -689,7 +845,7 @@ function luggageView(){
       html += `<div class="lug-item ${it.checked?'checked':''}">
         <div class="box" onclick="toggleLug('${it.id}')">${it.checked?'✓':''}</div>
         <input value="${escapeHtml(it.item)}" onchange="lug_upd('${it.id}','item',this.value)">
-        ${editMode?`<div class="del" onclick="delLug('${it.id}')">✕</div>`:""}
+        ${editMode && !RO() ?`<div class="del" onclick="delLug('${it.id}')">✕</div>`:""}
       </div>`;
     });
     html += `</div>`;
@@ -704,50 +860,70 @@ function luggageView(){
   return html;
 }
 function toggleLug(id){
-  const it = state.luggage.find(x=>x.id===id);
+  if(RO()) return;
+  const it = DATA().luggage.find(x=>x.id===id);
   it.checked = !it.checked;
   save(); render();
 }
 function lug_upd(id, field, val){
-  const it = state.luggage.find(x=>x.id===id);
+  if(RO()) return;
+  const it = DATA().luggage.find(x=>x.id===id);
   it[field]=val; save();
 }
 function addLug(){
+  if(RO()) return;
   const g = document.getElementById("newLugGroup").value.trim() || "其他";
   const n = document.getElementById("newLugItem").value.trim();
   if(!n) return showToast("請輸入物品名稱");
-  state.luggage.push({id:uid(), group:g, item:n, checked:false});
+  DATA().luggage.push({id:uid(), group:g, item:n, checked:false});
   save(); render();
 }
 function delLug(id){
-  state.luggage = state.luggage.filter(x=>x.id!==id);
+  if(RO()) return;
+  DATA().luggage = DATA().luggage.filter(x=>x.id!==id);
   save("已刪除"); render();
 }
 
-/* ============ 分帳 ============ */
+/* ============ 分帳（含貨幣換算） ============ */
 function billingView(){
-  const b = state.billing;
+  const b = DATA().billing;
   const totalCount = b.members.reduce((s,m)=>s+(Number(m.count)||0),0) || 1;
   const totalDeposit = b.members.reduce((s,m)=>s+(Number(m.deposit)||0),0);
-  const totalSpent = b.expenses.reduce((s,e)=>s+(Number(e.amount)||0),0);
+  const totalSpent = b.expenses.reduce((s,e)=>s+toBase(e.amount,e.currency),0);
+  const baseOpts = CURRENCIES.map(c=>`<option value="${c.code}" ${c.code===b.baseCurrency?"selected":""}>${c.sym} ${c.label}</option>`).join("");
 
   let html = `
     <div class="section-title"><span class="bar"></span>分帳記帳</div>
-    <p class="section-desc">每人先繳訂金，花費從公帳支出，最後多退少補<br>※ 個人花費（自己買的東西）不列入記帳</p>
-    <div class="sync-badge">☁️ 已同步（大家都看得到）</div>
-    <div class="btn jade block" onclick="exportCsv()" style="margin-bottom:22px">📊 匯出成 CSV</div>
+    <p class="section-desc">每人先繳訂金，花費從公帳支出，最後多退少補<br>※ 個人花費（自己買的東西）不列入記帳・每筆花費可用不同貨幣輸入，會自動換算</p>
+    <div class="sync-badge">☁ SYNCED・大家都看得到</div>
+    <div class="btn jade block" onclick="exportCsv()" style="margin-bottom:18px">📊 匯出成 CSV</div>
 
-    <div class="section-title" style="font-size:17px">成員</div>
+    <div class="rate-panel">
+      <div class="rate-title">🌐 匯率設定（以新台幣 NT$ 為基準，可自行調整）</div>
+      <div class="rate-grid">
+        ${CURRENCIES.filter(c=>c.code!=="TWD").map(c=>`
+          <div class="rate-item">
+            <span class="cc">${c.sym} ${c.code}</span><span class="eq">1 =</span>
+            <input type="number" step="0.01" value="${b.rates[c.code]}" onchange="rate_upd('${c.code}',this.value)">
+            <span class="eq">NT$</span>
+          </div>`).join("")}
+      </div>
+      <div class="rate-base-row">
+        顯示金額使用　<select onchange="base_upd(this.value)">${baseOpts}</select>
+      </div>
+    </div>
+
+    <div class="section-title" style="font-size:16px">成員</div>
     <div class="member-row">
-      ${b.members.map(m=>`<div class="member-pill">${escapeHtml(m.name)}${editMode?`<div class="x" onclick="delMember('${m.id}')">✕</div>`:""}</div>`).join("")}
+      ${b.members.map(m=>`<div class="member-pill">${escapeHtml(m.name)}${editMode && !RO() ?`<div class="x" onclick="delMember('${m.id}')">✕</div>`:""}</div>`).join("")}
     </div>
     <div class="member-add">
       <input class="field-input" id="newMemberName" placeholder="輸入姓名，例如：小美">
-      <div class="btn vermillion" onclick="addMember()">加入</div>
+      <div class="btn violet" onclick="addMember()">加入</div>
     </div>
 
-    <div class="section-title" style="font-size:17px">各家人數與訂金</div>
-    <p class="section-desc">公帳花費會依各家人數比例分攤</p>
+    <div class="section-title" style="font-size:16px">各家人數與訂金</div>
+    <p class="section-desc">公帳花費會依各家人數比例分攤（訂金以${curSym(b.baseCurrency)} ${b.baseCurrency} 計）</p>
   `;
   b.members.forEach(m=>{
     html += `
@@ -757,29 +933,35 @@ function billingView(){
       </div>
       <div class="fam-fields">
         <div><label>人數</label><input type="number" value="${m.count}" onchange="m_upd('${m.id}','count',this.value)"></div>
-        <div><label>已繳訂金 ¥</label><input type="number" value="${m.deposit}" onchange="m_upd('${m.id}','deposit',this.value)"></div>
+        <div><label>已繳訂金 ${curSym(b.baseCurrency)}</label><input type="number" value="${m.deposit}" onchange="m_upd('${m.id}','deposit',this.value)"></div>
       </div>
     </div>`;
   });
 
   html += `
-    <div class="section-title" style="font-size:17px;margin-top:22px">公帳花費紀錄</div>
+    <div class="section-title" style="font-size:16px;margin-top:22px">公帳花費紀錄</div>
   `;
   if(b.expenses.length===0){
     html += `<div class="empty">還沒有任何花費紀錄</div>`;
   }
+  const curOpts = (sel)=>CURRENCIES.map(c=>`<option value="${c.code}" ${c.code===sel?"selected":""}>${c.sym}${c.code}</option>`).join("");
   b.expenses.forEach(e=>{
     const payerOpts = b.members.map(m=>`<option value="${m.id}" ${m.id===e.payer?"selected":""}>${escapeHtml(m.name)}</option>`).join("");
+    const converted = toBase(e.amount, e.currency);
     html += `
     <div class="expense-row">
       <div class="r1">
         <input type="text" value="${escapeHtml(e.desc)}" placeholder="項目說明" onchange="e_upd('${e.id}','desc',this.value)">
-        <input type="number" value="${e.amount}" placeholder="金額" onchange="e_upd('${e.id}','amount',this.value)">
       </div>
       <div class="r2">
+        <select class="cur" onchange="e_upd('${e.id}','currency',this.value)">${curOpts(e.currency)}</select>
+        <input type="number" value="${e.amount}" placeholder="金額" onchange="e_upd('${e.id}','amount',this.value)">
+        <span class="conv">${e.currency!==b.baseCurrency ? "≈ "+fmtMoney(converted) : ""}</span>
+      </div>
+      <div class="r3">
         <span style="font-size:12px;color:var(--ink-soft)">誰先付的</span>
         <select onchange="e_upd('${e.id}','payer',this.value)">${payerOpts}</select>
-        ${editMode?`<div class="del" onclick="delExpense('${e.id}')">刪除</div>`:""}
+        ${editMode && !RO() ?`<div class="del" onclick="delExpense('${e.id}')">刪除</div>`:""}
       </div>
     </div>`;
   });
@@ -787,8 +969,8 @@ function billingView(){
 
   html += `
     <div class="totals">
-      <div class="stat" style="flex:1;border:2px solid var(--line);border-radius:14px;background:var(--card)"><div class="k">已收訂金</div><div class="v">${fmtMoney(totalDeposit)}</div></div>
-      <div class="stat" style="flex:1;border:2px solid var(--line);border-radius:14px;background:var(--card)"><div class="k">公帳已花</div><div class="v" style="color:var(--vermillion)">${fmtMoney(totalSpent)}</div></div>
+      <div class="stat"><div class="k">已收訂金</div><div class="v">${fmtMoney(totalDeposit)}</div></div>
+      <div class="stat"><div class="k">公帳已花（換算後）</div><div class="v">${fmtMoney(totalSpent)}</div></div>
     </div>
 
     <div class="settle-card">
@@ -807,44 +989,61 @@ function billingView(){
   html += `</div>`;
   return html;
 }
+function rate_upd(code, val){
+  if(RO()) return;
+  DATA().billing.rates[code] = Number(val)||0;
+  save(); render();
+}
+function base_upd(val){
+  if(RO()) return;
+  DATA().billing.baseCurrency = val;
+  save(); render();
+}
 function m_upd(id, field, val){
-  const m = state.billing.members.find(x=>x.id===id);
+  if(RO()) return;
+  const m = DATA().billing.members.find(x=>x.id===id);
   m[field] = field==="name" ? val : Number(val);
   save(); render();
 }
 function addMember(){
+  if(RO()) return;
   const nameInput = document.getElementById("newMemberName");
   const name = nameInput.value.trim();
   if(!name) return showToast("請輸入姓名");
-  state.billing.members.push({id:uid(), name, count:1, deposit:0});
+  DATA().billing.members.push({id:uid(), name, count:1, deposit:0});
   save(); render();
 }
 function delMember(id){
-  state.billing.members = state.billing.members.filter(x=>x.id!==id);
+  if(RO()) return;
+  DATA().billing.members = DATA().billing.members.filter(x=>x.id!==id);
   save("已刪除"); render();
 }
 function e_upd(id, field, val){
-  const e = state.billing.expenses.find(x=>x.id===id);
+  if(RO()) return;
+  const e = DATA().billing.expenses.find(x=>x.id===id);
   e[field] = field==="amount" ? Number(val) : val;
   save(); render();
 }
 function addExpense(){
-  const firstMember = state.billing.members[0];
-  state.billing.expenses.push({id:uid(), desc:"", amount:0, payer: firstMember?firstMember.id:""});
+  if(RO()) return;
+  const b = DATA().billing;
+  const firstMember = b.members[0];
+  b.expenses.push({id:uid(), desc:"", amount:0, currency:b.baseCurrency, payer: firstMember?firstMember.id:""});
   save(); render();
 }
 function delExpense(id){
-  state.billing.expenses = state.billing.expenses.filter(x=>x.id!==id);
+  if(RO()) return;
+  DATA().billing.expenses = DATA().billing.expenses.filter(x=>x.id!==id);
   save("已刪除"); render();
 }
 function exportCsv(){
-  const b = state.billing;
+  const b = DATA().billing;
   const totalCount = b.members.reduce((s,m)=>s+(Number(m.count)||0),0) || 1;
-  const totalSpent = b.expenses.reduce((s,e)=>s+(Number(e.amount)||0),0);
-  let rows = [["項目","金額","付款人"]];
+  const totalSpent = b.expenses.reduce((s,e)=>s+toBase(e.amount,e.currency),0);
+  let rows = [["項目","原始金額","貨幣",`換算(${b.baseCurrency})`,"付款人"]];
   b.expenses.forEach(e=>{
     const payer = b.members.find(m=>m.id===e.payer);
-    rows.push([e.desc, e.amount, payer?payer.name:""]);
+    rows.push([e.desc, e.amount, e.currency, toBase(e.amount,e.currency).toFixed(0), payer?payer.name:""]);
   });
   rows.push([]);
   rows.push(["家庭","人數","已繳訂金","應分攤","應退／應補"]);
@@ -863,19 +1062,94 @@ function exportCsv(){
   showToast("已匯出 CSV");
 }
 
+/* ============ 旅程存檔 ============ */
+function archiveView(){
+  const list = state.archive || [];
+  let html = `
+    <div class="section-title"><span class="bar"></span>旅程存檔</div>
+    <p class="section-desc">把目前的行程存起來，之後可以隨時打開查看當時的安排與花費</p>
+    <div class="btn violet block" onclick="saveCurrentAsArchive()" style="margin-bottom:20px">💾 儲存目前行程為新存檔</div>
+  `;
+  if(list.length===0){
+    html += `<div class="empty">還沒有任何存檔</div>`;
+  }
+  list.forEach(a=>{
+    const days = (a.data.days||[]).length;
+    const b = a.data.billing || {members:[],expenses:[],rates:DEFAULT_RATES,baseCurrency:"TWD"};
+    const spent = (b.expenses||[]).reduce((s,e)=>{
+      const rates = b.rates||DEFAULT_RATES;
+      const rc = rates[e.currency] ?? 1, rb = rates[b.baseCurrency] ?? 1;
+      return s + (Number(e.amount)||0)*rc/rb;
+    },0);
+    const sym = curSym(b.baseCurrency||"TWD");
+    const savedStr = new Date(a.savedAt).toLocaleDateString("zh-Hant");
+    html += `
+    <div class="arc-card">
+      <div class="arc-top">
+        <div class="arc-title">${escapeHtml(a.name)}</div>
+        <div class="arc-date">存於 ${savedStr}</div>
+      </div>
+      <div class="arc-stats">${days} DAYS ・ 花費 ${sym}${Math.round(spent).toLocaleString("zh-Hant")}</div>
+      <div class="arc-actions">
+        <div class="btn sm jade" onclick="viewArchive('${a.id}')">👁 查看</div>
+        <div class="btn sm" onclick="deleteArchive('${a.id}')">🗑 刪除</div>
+      </div>
+    </div>`;
+  });
+  return html;
+}
+function saveCurrentAsArchive(){
+  const defaultName = state.meta.title || "旅程";
+  const name = prompt("為這個存檔命名：", defaultName);
+  if(name===null) return;
+  const snapshot = JSON.parse(JSON.stringify({
+    meta:state.meta, flights:state.flights, days:state.days, luggage:state.luggage, billing:state.billing
+  }));
+  state.archive = state.archive || [];
+  state.archive.unshift({id:uid(), name:(name.trim()||"未命名旅程"), savedAt:new Date().toISOString(), data:snapshot});
+  save("已存檔");
+  render();
+}
+function viewArchive(id){
+  const a = (state.archive||[]).find(x=>x.id===id);
+  if(!a) return;
+  viewingArchive = JSON.parse(JSON.stringify(a.data));
+  viewingArchiveMeta = {name:a.name, savedAt:a.savedAt};
+  showArchive = false;
+  tab = "flights";
+  editMode = false;
+  render();
+  showToast("正在查看封存行程（唯讀）");
+}
+function exitArchiveView(){
+  viewingArchive = null;
+  viewingArchiveMeta = null;
+  render();
+}
+function deleteArchive(id){
+  if(!confirm("確定要刪除這個存檔嗎？此動作無法復原。")) return;
+  state.archive = (state.archive||[]).filter(x=>x.id!==id);
+  save("已刪除存檔");
+  render();
+}
+
 /* ============ 標題 / 副標編輯 ============ */
 document.getElementById("tripTitleView").addEventListener("blur", function(){
-  state.meta.title = this.innerText.trim() || "未命名旅程";
+  if(RO()) return;
+  DATA().meta.title = this.innerText.trim() || "未命名旅程";
   save();
 });
 document.getElementById("tripSub").addEventListener("change", function(){
-  state.meta.sub = this.value; save();
+  if(RO()) return;
+  DATA().meta.sub = this.value; save();
 });
 document.getElementById("baseNote").addEventListener("change", function(){
-  state.meta.base = this.value; save();
+  if(RO()) return;
+  DATA().meta.base = this.value; save();
 });
 
 document.getElementById("stampBtn").addEventListener("click", function(){
+  if(RO()) return;
   editMode = !editMode;
   showToast(editMode ? "編輯模式：可刪除項目" : "編輯模式已關閉");
   render();
